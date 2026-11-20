@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoạt động 2: Smart Validator - Bộ kiểm tra thông minh</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div class="brand-info">
+      <span class="brand-badge">LHU · TUẦN 11</span>
+      <span class="brand-title">Xử Lý Form & Kiểm Soát Dữ Liệu</span>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+      <a href="../challenge/the_secure_form.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Thách thức</a>
+    </div>
+  </nav>
+
+  <div class="main-container" style="max-width: 850px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <a href="../index.html#inclass" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách bài tập
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="card-badge badge-inclass">Hoạt Động Thực Hành 2 (45 Phút)</span>
+          <h1 class="card-title" style="font-size: 1.5rem; margin-top: 0.5rem;">
+            <i class="fa-solid fa-spell-check text-primary"></i> "Smart Validator" - Bộ kiểm tra thông minh
+          </h1>
+        </div>
+      </div>
+
+      <div class="card-desc">
+        <p><strong>Mục tiêu:</strong> Xây dựng Form đăng ký có kiểm soát lỗi thông minh:
+          <ul style="margin-top: 0.35rem; padding-left: 1.25rem;">
+            <li>Nếu <strong>Username ít hơn 5 ký tự</strong>: hiển thị lỗi <em>"Tên quá ngắn (tối thiểu 5 ký tự)"</em> vào thẻ <code>&lt;span class="error-msg"&gt;</code> và đổi border sang màu đỏ.</li>
+            <li>Nếu ô <strong>Email không chứa ký tự "@"</strong>: hiển thị lỗi màu đỏ ngay bên dưới.</li>
+            <li>Nếu ô <strong>Mật khẩu để trống</strong>: hiển thị lỗi màu đỏ yêu cầu nhập mật khẩu.</li>
+          </ul>
+        </p>
+      </div>
+
+      <!-- AI Prompt Box as required in syllabus -->
+      <div style="background: #fdf4ff; border-left: 4px solid #a855f7; padding: 1rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem;">
+        <h3 style="color: #7e22ce; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Prompt Mẫu Yêu Cầu AI (Syllabus)
+        </h3>
+        <p style="font-size: 0.85rem; color: #581c87; font-style: italic;">
+          "Viết mã JS để kiểm tra một Form: Nếu ô 'username' ít hơn 5 ký tự, hãy hiển thị lỗi 'Tên quá ngắn' vào một thẻ span có class 'error-msg' và đổi border của input sang màu đỏ."
+        </p>
+      </div>
+
+      <!-- Registration Form -->
+      <form id="smartValidatorForm" novalidate style="margin-bottom: 1.5rem;">
+        
+        <!-- Field 1: Username -->
+        <div class="form-group">
+          <label for="username" class="form-label">Tên người dùng (Username) <span class="required">*</span></label>
+          <input type="text" id="username" class="form-control" placeholder="Nhập username (tối thiểu 5 ký tự)...">
+          <span id="usernameError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 2: Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email <span class="required">*</span></label>
+          <input type="email" id="email" class="form-control" placeholder="example@lachong.edu.vn">
+          <span id="emailError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 3: Password -->
+        <div class="form-group">
+          <label for="password" class="form-label">Mật khẩu <span class="required">*</span></label>
+          <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu của bạn...">
+          <span id="passwordError" class="error-msg"></span>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-check"></i> Xác Thực & Đăng Ký
+          </button>
+          <button type="button" id="resetBtn" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-rotate-left"></i> Đặt Lại
+          </button>
+        </div>
+      </form>
+
+      <!-- Feedback Banner -->
+      <div id="resultBanner" style="display: none; padding: 1rem 1.25rem; border-radius: 8px; font-size: 0.9rem;"></div>
+
+      <!-- Core JS logic breakdown -->
+      <div style="margin-top: 1.5rem; background: #f8fafc; border: 1px solid var(--border-card); border-radius: 8px; padding: 1rem;">
+        <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--dark);">
+          <i class="fa-solid fa-code"></i> Cơ chế xử lý đổi border và hiển thị lỗi:
+        </h4>
+        <pre style="background: #0f172a; color: #f8fafc; padding: 0.85rem; border-radius: 6px; font-size: 0.82rem; overflow-x: auto;"><code>function setError(input, errorSpan, message) {
+  input.classList.remove('input-success');
+  input.classList.add('input-error'); // Thêm viền đỏ
+  errorSpan.textContent = message;    // Hiển thị nội dung lỗi
+}
+
+function setSuccess(input, errorSpan) {
+  input.classList.remove('input-error');
+  input.classList.add('input-success'); // Thêm viền xanh
+  errorSpan.textContent = '';          // Xóa thông báo lỗi
+}</code></pre>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    <p>© 2026 Đại học Lạc Hồng · Học phần 111101 Thiết kế Web · Sinh viên: Huỳnh Hữu Phước (125000155)</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('smartValidatorForm');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    const usernameError = document.getElementById('usernameError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const resultBanner = document.getElementById('resultBanner');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Hàm tiện ích thiết lập trạng thái lỗi
+    function setError(input, errorElement, message) {
+      input.classList.remove('input-success');
+      input.classList.add('input-error');
+      errorElement.textContent = message;
+      return false;
+    }
+
+    // Hàm tiện ích thiết lập trạng thái thành công
+    function setSuccess(input, errorElement) {
+      input.classList.remove('input-error');
+      input.classList.add('input-success');
+      errorElement.textContent = '';
+      return true;
+    }
+
+    // Kiểm tra ô Username
+    function validateUsername() {
+      const val = usernameInput.value.trim();
+      if (val === '') {
+        return setError(usernameInput, usernameError, 'Tên người dùng không được để trống!');
+      } else if (val.length < 5) {
+        return setError(usernameInput, usernameError, 'Tên quá ngắn! Tối thiểu phải có 5 ký tự.');
+      } else {
+        return setSuccess(usernameInput, usernameError);
+      }
+    }
+
+    // Kiểm tra ô Email (kiểm tra có ký tự @)
+    function validateEmail() {
+      const val = emailInput.value.trim();
+      if (val === '') {
+        return setError(emailInput, emailError, 'Email không được để trống!');
+      } else if (!val.includes('@')) {
+        return setError(emailInput, emailError, 'Email không hợp lệ: phải chứa ký tự "@"!');
+      } else {
+        return setSuccess(emailInput, emailError);
+      }
+    }
+
+    // Kiểm tra ô Password (không để trống)
+    function validatePassword() {
+      const val = passwordInput.value;
+      if (val.trim() === '') {
+        return setError(passwordInput, passwordError, 'Mật khẩu không được để trống!');
+      } else {
+        return setSuccess(passwordInput, passwordError);
+      }
+    }
+
+    // Lắng nghe sự kiện gõ trực tiếp (Real-time feedback)
+    usernameInput.addEventListener('input', validateUsername);
+    emailInput.addEventListener('input', validateEmail);
+    passwordInput.addEventListener('input', validatePassword);
+
+    // Lắng nghe sự kiện Submit
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Chặn reload trang
+
+      const isUserValid = validateUsername();
+      const isEmailValid = validateEmail();
+      const isPassValid = validatePassword();
+
+      if (isUserValid && isEmailValid && isPassValid) {
+        resultBanner.style.display = 'block';
+        resultBanner.style.backgroundColor = '#ecfdf5';
+        resultBanner.style.border = '1px solid #10b981';
+        resultBanner.style.color = '#065f46';
+        resultBanner.innerHTML = `
+          <strong><i class="fa-solid fa-circle-check"></i> Xác thực thành công!</strong><br>
+          Dữ liệu hợp lệ: Username <code>${usernameInput.value}</code> | Email: <code>${emailInput.value}</code>
+        `;
+        console.log("Form dữ liệu hoàn toàn hợp lệ:", {
+          username: usernameInput.value,
+          email: emailInput.value
+        });
+      } else {
+        resultBanner.style.display = 'block';
+        resultBanner.style.backgroundColor = '#fef2f2';
+        resultBanner.style.border = '1px solid #ef4444';
+        resultBanner.style.color = '#991b1b';
+        resultBanner.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> Có lỗi trong biểu mẫu!</strong> Vui lòng kiểm tra lại các trường có viền đỏ.`;
+      }
+    });
+
+    resetBtn.addEventListener('click', function() {
+      form.reset();
+      [usernameInput, emailInput, passwordInput].forEach(inp => {
+        inp.classList.remove('input-error', 'input-success');
+      });
+      [usernameError, emailError, passwordError].forEach(span => {
+        span.textContent = '';
+      });
+      resultBanner.style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>

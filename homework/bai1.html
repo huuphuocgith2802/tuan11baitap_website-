@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 1: Form liên hệ cơ bản - Điền đầy đủ tất cả trường</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div class="brand-info">
+      <span class="brand-badge">LHU · TUẦN 11</span>
+      <span class="brand-title">Xử Lý Form & Kiểm Soát Dữ Liệu</span>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+      <a href="../challenge/the_secure_form.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Thách thức</a>
+    </div>
+  </nav>
+
+  <div class="main-container" style="max-width: 800px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <a href="../index.html#homework" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách bài tập
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="card-badge badge-homework">Bài Tập Về Nhà 1</span>
+          <h1 class="card-title" style="font-size: 1.45rem; margin-top: 0.5rem;">
+            <i class="fa-solid fa-address-book text-primary"></i> Form Liên Hệ Cơ Bản (Required All Fields)
+          </h1>
+        </div>
+      </div>
+
+      <div class="card-desc">
+        <p><strong>Yêu cầu đề bài:</strong> Tạo form gồm <strong>Tên</strong>, <strong>Email</strong>, <strong>Nội dung</strong>. Chỉ cho phép gửi khi tất cả các trường đã được điền. Nếu để trống bất kỳ trường nào, hệ thống sẽ cảnh báo chính xác vị trí chưa điền và không cho phép gửi.</p>
+      </div>
+
+      <form id="contactForm" novalidate style="margin-bottom: 1.5rem;">
+        
+        <!-- Field 1: Họ tên -->
+        <div class="form-group">
+          <label for="contactName" class="form-label">Họ và tên <span class="required">*</span></label>
+          <input type="text" id="contactName" class="form-control" placeholder="Nhập họ và tên...">
+          <span id="nameError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 2: Email -->
+        <div class="form-group">
+          <label for="contactEmail" class="form-label">Email liên hệ <span class="required">*</span></label>
+          <input type="email" id="contactEmail" class="form-control" placeholder="vidu@email.com">
+          <span id="emailError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 3: Nội dung liên hệ -->
+        <div class="form-group">
+          <label for="contactMessage" class="form-label">Nội dung liên hệ <span class="required">*</span></label>
+          <textarea id="contactMessage" class="form-control" rows="4" placeholder="Nhập nội dung cần hỗ trợ hoặc liên hệ..."></textarea>
+          <span id="messageError" class="error-msg"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-paper-plane"></i> Gửi Tin Nhắn Liên Hệ
+        </button>
+      </form>
+
+      <!-- Alert Box -->
+      <div id="contactAlert" style="display: none; padding: 1rem 1.25rem; border-radius: 8px;"></div>
+
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    <p>© 2026 Đại học Lạc Hồng · Học phần 111101 Thiết kế Web · Sinh viên: Huỳnh Hữu Phước (125000155)</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('contactName');
+    const emailInput = document.getElementById('contactEmail');
+    const messageInput = document.getElementById('contactMessage');
+
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const messageError = document.getElementById('messageError');
+    const alertBox = document.getElementById('contactAlert');
+
+    function checkField(input, errorElem, fieldName) {
+      if (!input.value || input.value.trim() === '') {
+        input.classList.add('input-error');
+        input.classList.remove('input-success');
+        errorElem.textContent = `Vui lòng nhập ${fieldName}! Không được để trống.`;
+        return false;
+      } else {
+        input.classList.remove('input-error');
+        input.classList.add('input-success');
+        errorElem.textContent = '';
+        return true;
+      }
+    }
+
+    [nameInput, emailInput, messageInput].forEach(inp => {
+      inp.addEventListener('input', () => {
+        if (inp.value.trim() !== '') {
+          inp.classList.remove('input-error');
+          inp.classList.add('input-success');
+          const span = inp.parentElement.querySelector('.error-msg');
+          if (span) span.textContent = '';
+        }
+      });
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const validName = checkField(nameInput, nameError, 'Họ và tên');
+      const validEmail = checkField(emailInput, emailError, 'Email');
+      const validMsg = checkField(messageInput, messageError, 'Nội dung liên hệ');
+
+      if (validName && validEmail && validMsg) {
+        alertBox.style.display = 'block';
+        alertBox.style.backgroundColor = '#ecfdf5';
+        alertBox.style.border = '1px solid #10b981';
+        alertBox.style.color = '#065f46';
+        alertBox.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Gửi liên hệ thành công!</strong> Cảm ơn <strong>${nameInput.value}</strong>, chúng tôi sẽ phản hồi qua email <strong>${emailInput.value}</strong>.`;
+        form.reset();
+        [nameInput, emailInput, messageInput].forEach(inp => inp.classList.remove('input-success'));
+      } else {
+        alertBox.style.display = 'block';
+        alertBox.style.backgroundColor = '#fef2f2';
+        alertBox.style.border = '1px solid #ef4444';
+        alertBox.style.color = '#991b1b';
+        alertBox.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> Không thể gửi!</strong> Vui lòng điền đầy đủ tất cả các trường trước khi gửi.`;
+      }
+    });
+  </script>
+
+</body>
+</html>

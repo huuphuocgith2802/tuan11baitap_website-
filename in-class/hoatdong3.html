@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoạt động 3: Data Collector - Thu thập dữ liệu Form</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div class="brand-info">
+      <span class="brand-badge">LHU · TUẦN 11</span>
+      <span class="brand-title">Xử Lý Form & Kiểm Soát Dữ Liệu</span>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+      <a href="../challenge/the_secure_form.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Thách thức</a>
+    </div>
+  </nav>
+
+  <div class="main-container" style="max-width: 850px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <a href="../index.html#inclass" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách bài tập
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="card-badge badge-inclass">Hoạt Động Thực Hành 3 (30 Phút)</span>
+          <h1 class="card-title" style="font-size: 1.5rem; margin-top: 0.5rem;">
+            <i class="fa-solid fa-boxes-stacked text-success"></i> "Data Collector" - Thu thập dữ liệu đa dạng
+          </h1>
+        </div>
+      </div>
+
+      <div class="card-desc">
+        <p><strong>Mục tiêu:</strong> Thu thập dữ liệu từ các loại Input đa dạng: <strong>Text</strong> (Họ tên), <strong>Radio button</strong> (Giới tính: Nam, Nữ, Khác), <strong>Checkbox</strong> (Sở thích: chọn nhiều mục mảng Array), và <strong>Select</strong> (Tỉnh/Thành phố). Tổng hợp thành một đối tượng JavaScript (Object) hoàn chỉnh có cấu trúc sạch.</p>
+      </div>
+
+      <!-- Data Collector Form -->
+      <form id="collectorForm" style="margin-bottom: 1.5rem;">
+        
+        <!-- Field 1: Họ tên -->
+        <div class="form-group">
+          <label for="collectorName" class="form-label">Họ và tên <span class="required">*</span></label>
+          <input type="text" id="collectorName" class="form-control" placeholder="Ví dụ: Huỳnh Hữu Phước" required>
+        </div>
+
+        <!-- Field 2: Giới tính (Radio Button) -->
+        <div class="form-group">
+          <label class="form-label">Giới tính <span class="required">*</span></label>
+          <div class="radio-inline">
+            <label class="custom-control">
+              <input type="radio" name="gender" value="Nam" checked>
+              <span>Nam</span>
+            </label>
+            <label class="custom-control">
+              <input type="radio" name="gender" value="Nữ">
+              <span>Nữ</span>
+            </label>
+            <label class="custom-control">
+              <input type="radio" name="gender" value="Khác">
+              <span>Khác</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Field 3: Sở thích (Checkbox) -->
+        <div class="form-group">
+          <label class="form-label">Sở thích (Chọn 1 hoặc nhiều mục) <span class="required">*</span></label>
+          <div class="checkbox-inline">
+            <label class="custom-control">
+              <input type="checkbox" name="hobbies" value="Lập trình Web" checked>
+              <span>Lập trình Web</span>
+            </label>
+            <label class="custom-control">
+              <input type="checkbox" name="hobbies" value="Đá bóng">
+              <span>Đá bóng</span>
+            </label>
+            <label class="custom-control">
+              <input type="checkbox" name="hobbies" value="Đọc sách">
+              <span>Đọc sách</span>
+            </label>
+            <label class="custom-control">
+              <input type="checkbox" name="hobbies" value="Chơi game">
+              <span>Chơi game</span>
+            </label>
+            <label class="custom-control">
+              <input type="checkbox" name="hobbies" value="Du lịch">
+              <span>Du lịch</span>
+            </label>
+          </div>
+          <span id="hobbiesError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 4: Tỉnh/Thành phố (Select Option) -->
+        <div class="form-group">
+          <label for="collectorCity" class="form-label">Tỉnh / Thành phố sinh sống <span class="required">*</span></label>
+          <select id="collectorCity" class="form-control" required>
+            <option value="">-- Chọn Tỉnh / Thành phố --</option>
+            <option value="Đồng Nai" selected>Đồng Nai (Biên Hòa)</option>
+            <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+            <option value="Bình Dương">Bình Dương</option>
+            <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+            <option value="Hà Nội">Hà Nội</option>
+            <option value="Đà Nẵng">Đà Nẵng</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-cube"></i> Đóng Gói Thành Object (JSON)
+          </button>
+          <button type="reset" class="btn btn-secondary">
+            <i class="fa-solid fa-rotate-left"></i> Khôi Phục Mặc Định
+          </button>
+        </div>
+      </form>
+
+      <!-- Output Payload Card -->
+      <div class="console-box" style="max-height: 280px;">
+        <div class="console-header">
+          <span><i class="fa-solid fa-brackets-curly"></i> Đối Tượng Dữ Liệu JavaScript Hoàn Chỉnh</span>
+          <span id="jsonCount">0 sở thích được chọn</span>
+        </div>
+        <pre id="jsonResult" class="console-log" style="color: #38bdf8;">// Nhấn nút "Đóng Gói Thành Object" để xem kết quả tại đây...</pre>
+      </div>
+
+      <!-- Explanatory note -->
+      <div style="margin-top: 1.5rem; background: #f8fafc; border: 1px solid var(--border-card); border-radius: 8px; padding: 1rem;">
+        <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--dark);">
+          <i class="fa-solid fa-code"></i> Kỹ thuật lấy dữ liệu Radio & Checkbox:
+        </h4>
+        <pre style="background: #0f172a; color: #f8fafc; padding: 0.85rem; border-radius: 6px; font-size: 0.82rem; overflow-x: auto;"><code>// 1. Radio (Lấy mục duy nhất được checked):
+const selectedGender = document.querySelector('input[name="gender"]:checked')?.value;
+
+// 2. Checkbox (Lấy danh sách các mục được checked thành Array):
+const selectedHobbies = Array.from(document.querySelectorAll('input[name="hobbies"]:checked'))
+                             .map(checkbox => checkbox.value);</code></pre>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    <p>© 2026 Đại học Lạc Hồng · Học phần 111101 Thiết kế Web · Sinh viên: Huỳnh Hữu Phước (125000155)</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('collectorForm');
+    const jsonResult = document.getElementById('jsonResult');
+    const jsonCount = document.getElementById('jsonCount');
+    const hobbiesError = document.getElementById('hobbiesError');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Chặn tải lại trang
+
+      const name = document.getElementById('collectorName').value.trim();
+      const city = document.getElementById('collectorCity').value;
+      
+      // Lấy giá trị của Radio checked
+      const genderNode = document.querySelector('input[name="gender"]:checked');
+      const gender = genderNode ? genderNode.value : '';
+
+      // Lấy mảng các Checkbox checked
+      const checkedBoxes = document.querySelectorAll('input[name="hobbies"]:checked');
+      const hobbies = Array.from(checkedBoxes).map(cb => cb.value);
+
+      if (hobbies.length === 0) {
+        hobbiesError.textContent = 'Vui lòng chọn ít nhất 1 sở thích!';
+        return;
+      } else {
+        hobbiesError.textContent = '';
+      }
+
+      // Tạo đối tượng người dùng hoàn chỉnh
+      const userProfileObject = {
+        fullName: name,
+        gender: gender,
+        hobbies: hobbies,
+        city: city,
+        metadata: {
+          totalHobbies: hobbies.length,
+          createdAt: new Date().toISOString(),
+          status: "Verified_Client_Side"
+        }
+      };
+
+      // Hiển thị ra màn hình
+      jsonCount.textContent = `${hobbies.length} sở thích được chọn`;
+      jsonResult.textContent = JSON.stringify(userProfileObject, null, 2);
+
+      // In ra Console DevTools
+      console.log("%c[Hoạt động 3] User Profile Object:", "color: #38bdf8; font-weight: bold;", userProfileObject);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 2: Kiểm tra mật khẩu khớp nhau</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div class="brand-info">
+      <span class="brand-badge">LHU · TUẦN 11</span>
+      <span class="brand-title">Xử Lý Form & Kiểm Soát Dữ Liệu</span>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+      <a href="../challenge/the_secure_form.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Thách thức</a>
+    </div>
+  </nav>
+
+  <div class="main-container" style="max-width: 800px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <a href="../index.html#homework" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách bài tập
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="card-badge badge-homework">Bài Tập Về Nhà 2</span>
+          <h1 class="card-title" style="font-size: 1.45rem; margin-top: 0.5rem;">
+            <i class="fa-solid fa-key text-warning"></i> Kiểm Tra Mật Khẩu Trùng Khớp
+          </h1>
+        </div>
+      </div>
+
+      <div class="card-desc">
+        <p><strong>Yêu cầu đề bài:</strong> Tạo 2 ô "Mật khẩu" và "Nhập lại mật khẩu". Hiển thị thông báo <em>"Mật khẩu không khớp"</em> nếu dữ liệu ở 2 ô khác nhau. Hệ thống tự động so khớp theo thời gian thực (Real-time) khi người dùng gõ phím.</p>
+      </div>
+
+      <form id="passwordMatchForm" novalidate style="margin-bottom: 1.5rem;">
+        
+        <!-- Field 1: Mật khẩu -->
+        <div class="form-group">
+          <label for="pwd" class="form-label">Mật khẩu mới <span class="required">*</span></label>
+          <div style="position: relative;">
+            <input type="password" id="pwd" class="form-control" placeholder="Nhập mật khẩu mới...">
+            <button type="button" class="toggle-pwd-btn" onclick="toggleVisibility('pwd', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none; background: none; cursor: pointer; color: #64748b;">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+          <span id="pwdError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 2: Xác nhận mật khẩu -->
+        <div class="form-group">
+          <label for="confirmPwd" class="form-label">Nhập lại mật khẩu (Xác nhận) <span class="required">*</span></label>
+          <div style="position: relative;">
+            <input type="password" id="confirmPwd" class="form-control" placeholder="Nhập lại mật khẩu vừa gõ...">
+            <button type="button" class="toggle-pwd-btn" onclick="toggleVisibility('confirmPwd', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none; background: none; cursor: pointer; color: #64748b;">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+          <span id="confirmError" class="error-msg"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-lock"></i> Cập Nhật Mật Khẩu
+        </button>
+      </form>
+
+      <!-- Result Banner -->
+      <div id="matchAlert" style="display: none; padding: 1rem 1.25rem; border-radius: 8px;"></div>
+
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    <p>© 2026 Đại học Lạc Hồng · Học phần 111101 Thiết kế Web · Sinh viên: Huỳnh Hữu Phước (125000155)</p>
+  </footer>
+
+  <script>
+    const pwdInput = document.getElementById('pwd');
+    const confirmInput = document.getElementById('confirmPwd');
+    const pwdError = document.getElementById('pwdError');
+    const confirmError = document.getElementById('confirmError');
+    const form = document.getElementById('passwordMatchForm');
+    const matchAlert = document.getElementById('matchAlert');
+
+    function toggleVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    function checkMatch() {
+      const p1 = pwdInput.value;
+      const p2 = confirmInput.value;
+
+      if (!p1) {
+        pwdInput.classList.remove('input-success', 'input-error');
+        pwdError.textContent = '';
+      } else if (p1.length < 6) {
+        pwdInput.classList.add('input-error');
+        pwdInput.classList.remove('input-success');
+        pwdError.textContent = 'Mật khẩu phải có tối thiểu 6 ký tự!';
+      } else {
+        pwdInput.classList.remove('input-error');
+        pwdInput.classList.add('input-success');
+        pwdError.textContent = '';
+      }
+
+      if (!p2) {
+        confirmInput.classList.remove('input-success', 'input-error');
+        confirmError.textContent = '';
+        return false;
+      }
+
+      if (p1 !== p2) {
+        confirmInput.classList.add('input-error');
+        confirmInput.classList.remove('input-success');
+        confirmError.textContent = '❌ Mật khẩu không khớp! Vui lòng nhập lại.';
+        confirmError.style.color = 'var(--danger)';
+        return false;
+      } else {
+        confirmInput.classList.remove('input-error');
+        confirmInput.classList.add('input-success');
+        confirmError.textContent = '✔ Mật khẩu trùng khớp hoàn hảo!';
+        confirmError.style.color = 'var(--success)';
+        return true;
+      }
+    }
+
+    pwdInput.addEventListener('input', checkMatch);
+    confirmInput.addEventListener('input', checkMatch);
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const p1 = pwdInput.value;
+      const p2 = confirmInput.value;
+
+      if (!p1 || !p2) {
+        matchAlert.style.display = 'block';
+        matchAlert.style.backgroundColor = '#fef2f2';
+        matchAlert.style.border = '1px solid #ef4444';
+        matchAlert.style.color = '#991b1b';
+        matchAlert.innerHTML = `<strong>Lỗi:</strong> Vui lòng điền đủ 2 trường mật khẩu!`;
+        return;
+      }
+
+      if (p1 !== p2) {
+        matchAlert.style.display = 'block';
+        matchAlert.style.backgroundColor = '#fef2f2';
+        matchAlert.style.border = '1px solid #ef4444';
+        matchAlert.style.color = '#991b1b';
+        matchAlert.innerHTML = `<strong>Lỗi:</strong> Mật khẩu không khớp! Hãy kiểm tra lại.`;
+      } else {
+        matchAlert.style.display = 'block';
+        matchAlert.style.backgroundColor = '#ecfdf5';
+        matchAlert.style.border = '1px solid #10b981';
+        matchAlert.style.color = '#065f46';
+        matchAlert.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Thành công!</strong> 2 mật khẩu đã trùng khớp và sẵn sàng lưu.`;
+      }
+    });
+  </script>
+
+</body>
+</html>

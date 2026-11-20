@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 4: Tính tổng đơn hàng tự động</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .product-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.1rem;
+      border: 1.5px solid var(--border-card);
+      border-radius: var(--radius-md);
+      margin-bottom: 0.75rem;
+      transition: all 0.2s ease;
+      background: #ffffff;
+      cursor: pointer;
+    }
+    .product-item:hover {
+      border-color: var(--primary);
+      background: #f8fafc;
+    }
+    .product-item.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .product-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .product-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--dark);
+    }
+    .product-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .product-price {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div class="brand-info">
+      <span class="brand-badge">LHU · TUẦN 11</span>
+      <span class="brand-title">Xử Lý Form & Kiểm Soát Dữ Liệu</span>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+      <a href="../challenge/the_secure_form.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Thách thức</a>
+    </div>
+  </nav>
+
+  <div class="main-container" style="max-width: 850px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <a href="../index.html#homework" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách bài tập
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="card-badge badge-homework">Bài Tập Về Nhà 4</span>
+          <h1 class="card-title" style="font-size: 1.45rem; margin-top: 0.5rem;">
+            <i class="fa-solid fa-cart-shopping text-success"></i> Tính Tổng Đơn Hàng Tự Động
+          </h1>
+        </div>
+      </div>
+
+      <div class="card-desc">
+        <p><strong>Yêu cầu đề bài:</strong> Tạo form gồm các checkbox sản phẩm kèm giá tiền. Khi người dùng tick chọn hoặc bỏ chọn bất kỳ sản phẩm nào, tổng số tiền đơn hàng sẽ tự động cập nhật ngay lập tức bên dưới với định dạng tiền tệ VNĐ.</p>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <span style="font-size: 0.9rem; font-weight: 600; color: var(--dark);">Danh sách khóa học Lập trình Web:</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" id="selectAllBtn" class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.78rem;">
+            Chọn tất cả
+          </button>
+          <button type="button" id="deselectAllBtn" class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.78rem;">
+            Bỏ chọn
+          </button>
+        </div>
+      </div>
+
+      <!-- Product List Form -->
+      <form id="orderForm" style="margin-bottom: 1.5rem;">
+        
+        <!-- Item 1 -->
+        <label class="product-item">
+          <div class="product-meta">
+            <input type="checkbox" name="product" value="HTML5 & CSS3 Cơ Bản" data-price="250000" style="width: 1.15rem; height: 1.15rem; accent-color: var(--primary);">
+            <div>
+              <div class="product-title">1. Khóa học HTML5 & CSS3 Chuyên Sâu</div>
+              <div class="product-desc">Cấu trúc trang web chuẩn SEO, Flexbox & Grid CSS</div>
+            </div>
+          </div>
+          <div class="product-price">250.000 ₫</div>
+        </label>
+
+        <!-- Item 2 -->
+        <label class="product-item">
+          <div class="product-meta">
+            <input type="checkbox" name="product" value="JavaScript & DOM Nâng Cao" data-price="450000" style="width: 1.15rem; height: 1.15rem; accent-color: var(--primary);">
+            <div>
+              <div class="product-title">2. Khóa học JavaScript DOM & Form Validation</div>
+              <div class="product-desc">Xử lý sự kiện, Regex, Asynchronous JS & Fetch API</div>
+            </div>
+          </div>
+          <div class="product-price">450.000 ₫</div>
+        </label>
+
+        <!-- Item 3 -->
+        <label class="product-item">
+          <div class="product-meta">
+            <input type="checkbox" name="product" value="ReactJS & Redux Toolkit" data-price="600000" style="width: 1.15rem; height: 1.15rem; accent-color: var(--primary);">
+            <div>
+              <div class="product-title">3. Khóa học ReactJS & Redux Toolkit Modern</div>
+              <div class="product-desc">Xây dựng ứng dụng SPA, Hooks, Custom State Management</div>
+            </div>
+          </div>
+          <div class="product-price">600.000 ₫</div>
+        </label>
+
+        <!-- Item 4 -->
+        <label class="product-item">
+          <div class="product-meta">
+            <input type="checkbox" name="product" value="Backend NodeJS & MongoDB" data-price="550000" style="width: 1.15rem; height: 1.15rem; accent-color: var(--primary);">
+            <div>
+              <div class="product-title">4. Khóa học Backend NodeJS & Express Rest API</div>
+              <div class="product-desc">Authentication JWT, MongoDB, Bảo mật Form server-side</div>
+            </div>
+          </div>
+          <div class="product-price">550.000 ₫</div>
+        </label>
+
+        <!-- Total Calculation Box -->
+        <div style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff; padding: 1.25rem 1.5rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+          <div>
+            <div style="font-size: 0.85rem; color: #94a3b8;">Tổng cộng đơn hàng (<span id="selectedCount">0</span> sản phẩm):</div>
+            <div id="totalPriceDisplay" style="font-size: 1.85rem; font-weight: 800; color: #4ade80;">0 ₫</div>
+          </div>
+          <button type="submit" class="btn btn-success" style="padding: 0.8rem 1.5rem; font-size: 1rem;">
+            <i class="fa-solid fa-credit-card"></i> Đặt Mua Ngay
+          </button>
+        </div>
+      </form>
+
+      <!-- Alert -->
+      <div id="orderSuccessAlert" style="display: none; padding: 1rem 1.25rem; border-radius: 8px;"></div>
+
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    <p>© 2026 Đại học Lạc Hồng · Học phần 111101 Thiết kế Web · Sinh viên: Huỳnh Hữu Phước (125000155)</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('orderForm');
+    const checkboxes = document.querySelectorAll('input[name="product"]');
+    const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+    const selectedCount = document.getElementById('selectedCount');
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const deselectAllBtn = document.getElementById('deselectAllBtn');
+    const orderAlert = document.getElementById('orderSuccessAlert');
+
+    function formatVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    }
+
+    function calculateTotal() {
+      let total = 0;
+      let count = 0;
+
+      checkboxes.forEach(cb => {
+        const parent = cb.closest('.product-item');
+        if (cb.checked) {
+          total += parseInt(cb.dataset.price, 10);
+          count++;
+          parent.classList.add('selected');
+        } else {
+          parent.classList.remove('selected');
+        }
+      });
+
+      selectedCount.textContent = count;
+      totalPriceDisplay.textContent = formatVND(total);
+      return { total, count };
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', calculateTotal);
+    });
+
+    selectAllBtn.addEventListener('click', () => {
+      checkboxes.forEach(cb => cb.checked = true);
+      calculateTotal();
+    });
+
+    deselectAllBtn.addEventListener('click', () => {
+      checkboxes.forEach(cb => cb.checked = false);
+      calculateTotal();
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const { total, count } = calculateTotal();
+
+      if (count === 0) {
+        orderAlert.style.display = 'block';
+        orderAlert.style.backgroundColor = '#fef2f2';
+        orderAlert.style.border = '1px solid #ef4444';
+        orderAlert.style.color = '#991b1b';
+        orderAlert.innerHTML = `<strong>Lỗi:</strong> Vui lòng chọn ít nhất 1 khóa học để thanh toán!`;
+      } else {
+        orderAlert.style.display = 'block';
+        orderAlert.style.backgroundColor = '#ecfdf5';
+        orderAlert.style.border = '1px solid #10b981';
+        orderAlert.style.color = '#065f46';
+        orderAlert.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Đặt hàng thành công!</strong> Bạn đã đăng ký <strong>${count}</strong> khóa học với tổng số tiền <strong>${formatVND(total)}</strong>.`;
+      }
+    });
+
+    // Tính toán ban đầu
+    calculateTotal();
+  </script>
+
+</body>
+</html>

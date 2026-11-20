@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 5: Regex Email Checker - Kiểm tra định dạng Email chuẩn</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div class="brand-info">
+      <span class="brand-badge">LHU · TUẦN 11</span>
+      <span class="brand-title">Xử Lý Form & Kiểm Soát Dữ Liệu</span>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+      <a href="../challenge/the_secure_form.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Thách thức</a>
+    </div>
+  </nav>
+
+  <div class="main-container" style="max-width: 850px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <a href="../index.html#homework" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách bài tập
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="card-badge badge-homework">Bài Tập Về Nhà 5</span>
+          <h1 class="card-title" style="font-size: 1.45rem; margin-top: 0.5rem;">
+            <i class="fa-solid fa-at text-primary"></i> Regex Email Checker (Kiểm Tra Định Dạng Chuẩn)
+          </h1>
+        </div>
+      </div>
+
+      <div class="card-desc">
+        <p><strong>Yêu cầu đề bài:</strong> Sử dụng Prompt để yêu cầu AI tạo một đoạn mã Biểu thức chính quy (Regular Expression - Regex) kiểm tra định dạng email và tích hợp vào Form kiểm tra thời gian thực.</p>
+      </div>
+
+      <!-- Prompt AI Card -->
+      <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 1rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem;">
+        <h3 style="color: #1e40af; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+          <i class="fa-solid fa-brain"></i> Prompt Mẫu Gửi AI
+        </h3>
+        <p style="font-size: 0.85rem; color: #1e3a8a; font-style: italic; margin-bottom: 0.5rem;">
+          "Hãy tạo một biểu thức chính quy (Regex) trong JavaScript để kiểm tra một chuỗi có phải là địa chỉ email hợp lệ hay không, giải thích ý nghĩa từng phần và viết hàm validateEmail(email)."
+        </p>
+        <div style="font-family: var(--font-mono); font-size: 0.85rem; background: #ffffff; padding: 0.5rem 0.75rem; border-radius: 4px; border: 1px solid #bfdbfe; color: #1d4ed8;">
+          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        </div>
+      </div>
+
+      <!-- Live Email Tester Form -->
+      <form id="emailRegexForm" novalidate style="margin-bottom: 1.5rem;">
+        <div class="form-group">
+          <label for="regexEmailInput" class="form-label">Nhập địa chỉ Email để kiểm tra: <span class="required">*</span></label>
+          <input type="text" id="regexEmailInput" class="form-control" placeholder="Ví dụ: 125000155@lachong.edu.vn">
+          <span id="regexError" class="error-msg"></span>
+        </div>
+
+        <!-- Quick Test Chips -->
+        <div style="margin-bottom: 1.25rem;">
+          <span style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">Thử nhanh các mẫu kiểm thử:</span>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.78rem;" onclick="testSample('125000155@lachong.edu.vn')">125000155@lachong.edu.vn (Hợp lệ)</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.78rem;" onclick="testSample('huuphuoc@gmail.com')">huuphuoc@gmail.com (Hợp lệ)</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.78rem;" onclick="testSample('ten_mien_sai@com')">ten_mien_sai@com (Không TLD)</button>
+            <button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.78rem;" onclick="testSample('thieudaucongnghe.edu.vn')">thieudaucongnghe.edu.vn (Thiếu @)</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-magnifying-glass"></i> Kiểm Tra Định Dạng Email
+        </button>
+      </form>
+
+      <!-- Explanation Table -->
+      <div style="background: #f8fafc; border: 1px solid var(--border-card); border-radius: 8px; padding: 1.25rem;">
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--dark);">
+          <i class="fa-solid fa-list-check"></i> Phân tích cấu trúc Regex:
+        </h4>
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+          <thead>
+            <tr style="background: #e2e8f0; text-align: left;">
+              <th style="padding: 0.5rem;">Cụm Regex</th>
+              <th style="padding: 0.5rem;">Ý nghĩa kỹ thuật</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 0.5rem; font-family: var(--font-mono); font-weight: bold; color: #2563eb;">^</td>
+              <td style="padding: 0.5rem;">Bắt đầu của chuỗi</td>
+            </tr>
+            <tr style="background: #fff;">
+              <td style="padding: 0.5rem; font-family: var(--font-mono); font-weight: bold; color: #2563eb;">[a-zA-Z0-9._%+-]+</td>
+              <td style="padding: 0.5rem;">Tên tài khoản: chữ cái thường/hoa, số, và ký tự <code>. _ % + -</code> (tối thiểu 1 ký tự)</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.5rem; font-family: var(--font-mono); font-weight: bold; color: #2563eb;">@</td>
+              <td style="padding: 0.5rem;">Ký tự @ bắt buộc ngăn cách giữa tên và tên miền</td>
+            </tr>
+            <tr style="background: #fff;">
+              <td style="padding: 0.5rem; font-family: var(--font-mono); font-weight: bold; color: #2563eb;">[a-zA-Z0-9.-]+</td>
+              <td style="padding: 0.5rem;">Tên miền nhà cung cấp dịch vụ (ví dụ: lachong, gmail)</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.5rem; font-family: var(--font-mono); font-weight: bold; color: #2563eb;">\.</td>
+              <td style="padding: 0.5rem;">Dấu chấm phân cách (được escape bằng dấu gạch chéo ngược <code>\</code>)</td>
+            </tr>
+            <tr style="background: #fff;">
+              <td style="padding: 0.5rem; font-family: var(--font-mono); font-weight: bold; color: #2563eb;">[a-zA-Z]{2,}</td>
+              <td style="padding: 0.5rem;">Đuôi tên miền (TLD) có ít nhất 2 chữ cái (ví dụ: <code>vn, com, edu.vn</code>)</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.5rem; font-family: var(--font-mono); font-weight: bold; color: #2563eb;">$</td>
+              <td style="padding: 0.5rem;">Kết thúc chuỗi</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    <p>© 2026 Đại học Lạc Hồng · Học phần 111101 Thiết kế Web · Sinh viên: Huỳnh Hữu Phước (125000155)</p>
+  </footer>
+
+  <script>
+    const emailInput = document.getElementById('regexEmailInput');
+    const regexError = document.getElementById('regexError');
+    const form = document.getElementById('emailRegexForm');
+
+    // Chuẩn biểu thức chính quy Email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    function validateEmailRealtime() {
+      const value = emailInput.value.trim();
+
+      if (value === '') {
+        emailInput.classList.remove('input-error', 'input-success');
+        regexError.textContent = 'Vui lòng nhập địa chỉ email để kiểm tra.';
+        regexError.style.color = 'var(--text-muted)';
+        return false;
+      }
+
+      const isValid = emailRegex.test(value);
+
+      if (isValid) {
+        emailInput.classList.remove('input-error');
+        emailInput.classList.add('input-success');
+        regexError.textContent = `✔ Email "${value}" ĐÚNG định dạng chuẩn quốc tế!`;
+        regexError.style.color = 'var(--success)';
+        return true;
+      } else {
+        emailInput.classList.remove('input-success');
+        emailInput.classList.add('input-error');
+        regexError.textContent = `❌ Email "${value}" SAI định dạng (Cần có username@domain.tld)!`;
+        regexError.style.color = 'var(--danger)';
+        return false;
+      }
+    }
+
+    emailInput.addEventListener('input', validateEmailRealtime);
+
+    function testSample(email) {
+      emailInput.value = email;
+      validateEmailRealtime();
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      validateEmailRealtime();
+    });
+  </script>
+
+</body>
+</html>

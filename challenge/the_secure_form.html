@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎯 THÁCH THỨC TUẦN 11: The Secure Form - Form Đăng Ký Bảo Mật Đa Tầng</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .secure-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      color: #ffffff;
+      padding: 2.5rem 1.5rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .secure-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .secure-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(99, 102, 241, 0.25);
+      border: 1px solid #818cf8;
+      color: #c7d2fe;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.75rem;
+    }
+    .form-wrapper {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .rule-chip {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: #64748b;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+    }
+    .rule-chip.valid {
+      background: #ecfdf5;
+      color: #059669;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div class="brand-info">
+      <span class="brand-badge">LHU · TUẦN 11</span>
+      <span class="brand-title">Xử Lý Form & Kiểm Soát Dữ Liệu</span>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+      <a href="../form_logic.md" target="_blank" class="nav-link"><i class="fa-solid fa-file-lines"></i> form_logic.md</a>
+    </div>
+  </nav>
+
+  <!-- Toast Notification Container (Hiển thị mượt mà với setTimeout 3 giây) -->
+  <div class="toast-container" id="toastContainer">
+    <div id="secureToast" class="toast">
+      <div class="toast-content">
+        <div class="toast-icon">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <div>
+          <div class="toast-text" id="toastTitle">Đăng Ký Thành Công!</div>
+          <div class="toast-subtext" id="toastDesc">Dữ liệu đã được kiểm tra an toàn và gửi đi.</div>
+        </div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+  </div>
+
+  <div class="main-container" style="max-width: 900px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <a href="../index.html" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại Hub Tổng Hợp
+      </a>
+    </div>
+
+    <!-- Header Banner -->
+    <div class="secure-header">
+      <div class="secure-badge">
+        <i class="fa-solid fa-shield-halved"></i> THÁCH THỨC TUẦN 11 · NHÓM WEB
+      </div>
+      <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">
+        "THE SECURE FORM" - Form Đăng Ký Bảo Mật Đa Tầng
+      </h1>
+      <p style="color: #94a3b8; font-size: 0.95rem; max-width: 750px;">
+        Triển khai <strong>Real-time Validation</strong> (kiểm tra trực tiếp ngay khi người dùng đang gõ), thước đo độ mạnh mật khẩu 5 cấp độ, kiểm tra khớp mật khẩu, và <strong>Toast thông báo thành công mượt mà tự ẩn sau đúng 3 giây</strong> sử dụng <code>setTimeout</code>.
+      </p>
+    </div>
+
+    <!-- Main Form Section -->
+    <div class="form-wrapper">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; border-bottom: 1px solid var(--border-card); padding-bottom: 1rem;">
+        <div>
+          <h2 style="font-size: 1.35rem; font-weight: 700; color: var(--dark);">
+            <i class="fa-solid fa-user-shield text-primary"></i> Đăng Ký Tài Khoản Bảo Mật VIP
+          </h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Các trường có dấu <span style="color: var(--danger);">*</span> là thông tin bắt buộc.
+          </p>
+        </div>
+        <a href="../form_logic.md" target="_blank" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.75rem;">
+          <i class="fa-solid fa-book"></i> Đọc form_logic.md
+        </a>
+      </div>
+
+      <form id="secureRegisterForm" novalidate>
+        
+        <!-- Field 1: Họ và tên -->
+        <div class="form-group">
+          <label for="fullName" class="form-label">
+            <i class="fa-solid fa-user text-muted" style="margin-right: 4px;"></i> Họ và tên <span class="required">*</span>
+          </label>
+          <input type="text" id="fullName" class="form-control" placeholder="Nhập họ và tên đầy đủ (ví dụ: Huỳnh Hữu Phước)">
+          <span id="nameError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 2: Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">
+            <i class="fa-solid fa-envelope text-muted" style="margin-right: 4px;"></i> Địa chỉ Email <span class="required">*</span>
+          </label>
+          <input type="email" id="email" class="form-control" placeholder="Nhập email của bạn (ví dụ: 125000155@lachong.edu.vn)">
+          <span id="emailError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 3: Số điện thoại Việt Nam -->
+        <div class="form-group">
+          <label for="phone" class="form-label">
+            <i class="fa-solid fa-phone text-muted" style="margin-right: 4px;"></i> Số điện thoại Việt Nam <span class="required">*</span>
+          </label>
+          <input type="tel" id="phone" class="form-control" placeholder="Ví dụ: 0912345678 (10 số, đầu số 03, 05, 07, 08, 09)">
+          <span id="phoneError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 4: Mật khẩu & Strength Meter -->
+        <div class="form-group">
+          <label for="password" class="form-label">
+            <i class="fa-solid fa-lock text-muted" style="margin-right: 4px;"></i> Mật khẩu bảo mật <span class="required">*</span>
+          </label>
+          <div style="position: relative;">
+            <input type="password" id="password" class="form-control" placeholder="Tối thiểu 8 ký tự, bao gồm chữ hoa, chữ thường, số, ký tự đặc biệt...">
+            <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); border: none; background: none; cursor: pointer; color: #64748b; font-size: 1rem;">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+          
+          <!-- Password Strength Meter Bar -->
+          <div class="strength-bar-container">
+            <div id="strengthBar" class="strength-bar"></div>
+          </div>
+          <div class="strength-text">
+            <span style="color: var(--text-muted); font-size: 0.78rem;">Độ mạnh mật khẩu:</span>
+            <span id="strengthLabel" style="font-weight: 700; font-size: 0.78rem; color: #64748b;">Chưa nhập</span>
+          </div>
+
+          <!-- Password Rule Checklist -->
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;">
+            <span id="ruleLength" class="rule-chip"><i class="fa-solid fa-circle-dot"></i> ≥ 8 ký tự</span>
+            <span id="ruleLower" class="rule-chip"><i class="fa-solid fa-circle-dot"></i> Chữ thường [a-z]</span>
+            <span id="ruleUpper" class="rule-chip"><i class="fa-solid fa-circle-dot"></i> Chữ hoa [A-Z]</span>
+            <span id="ruleNumber" class="rule-chip"><i class="fa-solid fa-circle-dot"></i> Chữ số [0-9]</span>
+            <span id="ruleSpecial" class="rule-chip"><i class="fa-solid fa-circle-dot"></i> Ký tự đặc biệt (!@#$)</span>
+          </div>
+          <span id="passwordError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 5: Xác nhận mật khẩu -->
+        <div class="form-group">
+          <label for="confirmPassword" class="form-label">
+            <i class="fa-solid fa-shield-check text-muted" style="margin-right: 4px;"></i> Xác nhận lại mật khẩu <span class="required">*</span>
+          </label>
+          <div style="position: relative;">
+            <input type="password" id="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu để kiểm tra trùng khớp...">
+            <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('confirmPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); border: none; background: none; cursor: pointer; color: #64748b; font-size: 1rem;">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+          <span id="confirmError" class="error-msg"></span>
+        </div>
+
+        <!-- Field 6: Điều khoản dịch vụ -->
+        <div class="form-group" style="padding: 0.85rem 1rem; background: #f8fafc; border: 1px solid var(--border-card); border-radius: 8px;">
+          <label class="custom-control" style="font-weight: 500;">
+            <input type="checkbox" id="termsAgree">
+            <span>Tôi đồng ý với <a href="#termsModal" onclick="alert('Điều khoản bảo mật: Cam kết bảo mật thông tin sinh viên Lạc Hồng và thực hành an toàn dữ liệu.'); return false;">Điều khoản sử dụng và Chính sách bảo mật</a> <span class="required">*</span></span>
+          </label>
+          <span id="termsError" class="error-msg" style="margin-left: 1.6rem;"></span>
+        </div>
+
+        <!-- Submit Button (Locked until terms agreed) -->
+        <button type="submit" id="submitSecureBtn" class="btn btn-primary btn-block" style="padding: 0.85rem; font-size: 1rem; margin-top: 1rem;" disabled>
+          <i class="fa-solid fa-lock"></i> Đang Khóa (Vui lòng tick đồng ý Điều khoản)
+        </button>
+
+      </form>
+
+      <!-- Payload Inspector Box -->
+      <div id="payloadCard" style="display: none; margin-top: 1.5rem;" class="console-box">
+        <div class="console-header">
+          <span><i class="fa-solid fa-check-double text-success"></i> Gói Dữ Liệu Đã Xác Thực An Toàn (Client Payload)</span>
+          <span style="color: #4ade80;">Toast tự đóng sau đúng 3.0s</span>
+        </div>
+        <pre id="payloadOutput" class="console-log" style="color: #38bdf8;"></pre>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    <p>© 2026 Đại học Lạc Hồng · Học phần 111101 Thiết kế Web · Sinh viên: Huỳnh Hữu Phước (125000155)</p>
+  </footer>
+
+  <script src="secure_form.js"></script>
+
+</body>
+</html>

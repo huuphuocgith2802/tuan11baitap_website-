@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoạt động 1: Stop the Page! - Chặn tải lại trang</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div class="brand-info">
+      <span class="brand-badge">LHU · TUẦN 11</span>
+      <span class="brand-title">Xử Lý Form & Kiểm Soát Dữ Liệu</span>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+      <a href="../challenge/the_secure_form.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Thách thức</a>
+    </div>
+  </nav>
+
+  <div class="main-container" style="max-width: 850px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <a href="../index.html#inclass" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách bài tập
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="card-badge badge-inclass">Hoạt Động Thực Hành 1 (30 Phút)</span>
+          <h1 class="card-title" style="font-size: 1.5rem; margin-top: 0.5rem;">
+            <i class="fa-solid fa-hand text-danger"></i> "Stop the Page!" - Chặn tải lại trang
+          </h1>
+        </div>
+      </div>
+
+      <div class="card-desc">
+        <p><strong>Mục tiêu:</strong> Tạo một Form đơn giản. Khi người dùng nhấn nút "Gửi Dữ Liệu", sử dụng <code>event.preventDefault()</code> để ngăn chặn hành vi tải lại trang mặc định của trình duyệt, giữ nguyên trạng thái ứng dụng và trích xuất dữ liệu in ra Console.</p>
+      </div>
+
+      <!-- Vibe Coding Insight Box -->
+      <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 1rem 1.25rem; border-radius: 6px; margin-bottom: 1.5rem;">
+        <h3 style="color: #1e40af; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+          <i class="fa-solid fa-robot"></i> Vibe Coding Q&A (Hỏi Đáp Với AI)
+        </h3>
+        <p style="font-size: 0.88rem; color: #1e3a8a;">
+          <strong>Câu hỏi:</strong> <em>"Tại sao tôi cần dùng <code>preventDefault()</code> khi xử lý Form bằng JavaScript?"</em><br>
+          <strong>Trả lời:</strong> Mặc định khi bấm Submit, trình duyệt sẽ gửi HTTP request lên server và làm tải lại (reload) toàn bộ trang. Nếu trang bị tải lại, các biến JavaScript, DOM state, và dữ liệu người dùng đang nhập sẽ bị mất sạch! <code>preventDefault()</code> giúp chặn reload, trao quyền cho JS kiểm tra dữ liệu hoặc gửi qua Fetch/AJAX mà không giật trang.
+        </p>
+      </div>
+
+      <!-- Interactive Form -->
+      <form id="stopPageForm" style="margin-bottom: 1.5rem;">
+        <div class="form-group">
+          <label for="fullName" class="form-label">Họ và tên <span class="required">*</span></label>
+          <input type="text" id="fullName" class="form-control" placeholder="Nhập họ và tên của bạn..." required>
+        </div>
+
+        <div class="form-group">
+          <label for="userMessage" class="form-label">Lời nhắn / Ghi chú <span class="required">*</span></label>
+          <textarea id="userMessage" class="form-control" rows="3" placeholder="Nhập nội dung lời nhắn..." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-paper-plane"></i> Gửi Dữ Liệu (Đã Chặn Reload)
+          </button>
+          <button type="button" id="clearBtn" class="btn btn-secondary">
+            <i class="fa-solid fa-rotate-left"></i> Xóa Trắng
+          </button>
+        </div>
+      </form>
+
+      <!-- Live Console Simulator -->
+      <div class="console-box">
+        <div class="console-header">
+          <span><i class="fa-solid fa-terminal"></i> Console Log Viewer (Mô phỏng trình duyệt)</span>
+          <span id="logTimestamp" style="font-size: 0.72rem;">Sẵn sàng lắng nghe</span>
+        </div>
+        <div id="consoleOutput" class="console-log">
+<span class="log-info">[Hệ thống]: Đang chờ sự kiện submit từ Form... Nhấn nút "Gửi Dữ Liệu" để kiểm chứng!</span>
+        </div>
+      </div>
+
+      <!-- Source Code Explanation -->
+      <div style="margin-top: 1.5rem; background: #f8fafc; border: 1px solid var(--border-card); border-radius: 8px; padding: 1rem;">
+        <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--dark);">
+          <i class="fa-solid fa-code"></i> Mã nguồn JavaScript cốt lõi:
+        </h4>
+        <pre style="background: #0f172a; color: #f8fafc; padding: 0.85rem; border-radius: 6px; font-size: 0.82rem; overflow-x: auto;"><code>const form = document.querySelector('#stopPageForm');
+form.addEventListener('submit', function (event) {
+  // 1. Chặn hành vi tải lại trang mặc định
+  event.preventDefault();
+
+  // 2. Lấy giá trị input
+  const name = document.querySelector('#fullName').value;
+  const message = document.querySelector('#userMessage').value;
+
+  // 3. In ra console an toàn
+  console.log("Dữ liệu gửi lên:", { name, message });
+});</code></pre>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    <p>© 2026 Đại học Lạc Hồng · Học phần 111101 Thiết kế Web · Sinh viên: Huỳnh Hữu Phước (125000155)</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('stopPageForm');
+    const consoleOutput = document.getElementById('consoleOutput');
+    const logTimestamp = document.getElementById('logTimestamp');
+    const clearBtn = document.getElementById('clearBtn');
+
+    form.addEventListener('submit', function(event) {
+      // BƯỚC QUAN TRỌNG NHẤT: Chặn tải lại trang
+      event.preventDefault();
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const userMessage = document.getElementById('userMessage').value.trim();
+
+      const submissionData = {
+        fullName: fullName,
+        userMessage: userMessage,
+        submittedAt: new Date().toLocaleTimeString('vi-VN')
+      };
+
+      // In ra console thật của trình duyệt (F12)
+      console.log("%c[Hoạt động 1] Dữ liệu thu thập thành công (Không reload trang):", "color: #10b981; font-weight: bold; font-size: 13px;", submissionData);
+
+      // In trực tiếp ra console simulator trên giao diện
+      logTimestamp.textContent = submissionData.submittedAt;
+      consoleOutput.innerHTML = `
+<span class="log-success">✔ [SUCCESS] event.preventDefault() ĐÃ CHẶN TẢI LẠI TRANG THÀNH CÔNG!</span>
+<span class="log-info">Dữ liệu được in ra console.log():</span>
+${JSON.stringify(submissionData, null, 2)}
+      `.trim();
+    });
+
+    clearBtn.addEventListener('click', function() {
+      form.reset();
+      consoleOutput.innerHTML = `<span class="log-info">[Hệ thống]: Đã xóa dữ liệu form. Sẵn sàng thử lại.</span>`;
+    });
+  </script>
+
+</body>
+</html>

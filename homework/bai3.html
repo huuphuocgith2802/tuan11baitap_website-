@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 3: Bộ chọn màu nền (Color Picker)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .color-swatch-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .color-swatch-btn:hover {
+      transform: scale(1.15);
+    }
+  </style>
+</head>
+<body id="dynamicPageBody">
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar" style="background: rgba(255, 255, 255, 0.95);">
+    <div class="brand-info">
+      <span class="brand-badge">LHU · TUẦN 11</span>
+      <span class="brand-title">Xử Lý Form & Kiểm Soát Dữ Liệu</span>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+      <a href="../challenge/the_secure_form.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Thách thức</a>
+    </div>
+  </nav>
+
+  <div class="main-container" style="max-width: 800px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <a href="../index.html#homework" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách bài tập
+      </a>
+    </div>
+
+    <div class="card" id="mainPickerCard">
+      <div class="card-header">
+        <div>
+          <span class="card-badge badge-homework">Bài Tập Về Nhà 3</span>
+          <h1 class="card-title" style="font-size: 1.45rem; margin-top: 0.5rem;">
+            <i class="fa-solid fa-palette text-accent"></i> Bộ Chọn Màu Nền (Color Picker)
+          </h1>
+        </div>
+      </div>
+
+      <div class="card-desc">
+        <p><strong>Yêu cầu đề bài:</strong> Tạo một ô <code>&lt;input type="color"&gt;</code>. Khi người dùng chọn màu, màu nền của trang web (hoặc khung chứa) sẽ tự động thay đổi theo thời gian thực (sự kiện <code>input</code> / <code>change</code>).</p>
+      </div>
+
+      <!-- Color Picker UI -->
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; margin-bottom: 1.5rem;">
+        
+        <label for="bgColorPicker" style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--dark);">
+          Chọn màu sắc yêu thích của bạn:
+        </label>
+
+        <div style="display: flex; align-items: center; gap: 1.25rem;">
+          <input type="color" id="bgColorPicker" value="#f8fafc" style="width: 80px; height: 60px; border: none; cursor: pointer; border-radius: 8px; background: transparent;">
+          <div>
+            <div style="font-size: 1.2rem; font-weight: 800; font-family: var(--font-mono);" id="hexValue">#F8FAFC</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);" id="rgbValue">rgb(248, 250, 252)</div>
+          </div>
+        </div>
+
+        <!-- Target switch: Toàn trang or Thẻ Card -->
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+          <label class="custom-control">
+            <input type="radio" name="applyTarget" value="body" checked>
+            <span>Áp dụng màu cho toàn bộ trang web (Body)</span>
+          </label>
+          <label class="custom-control">
+            <input type="radio" name="applyTarget" value="card">
+            <span>Chỉ áp dụng cho thẻ Card</span>
+          </label>
+        </div>
+
+        <!-- Color Palette Presets -->
+        <div style="margin-top: 1.5rem; text-align: center;">
+          <span style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Gợi ý bảng màu thịnh hành (Preset Palettes):</span>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+            <button type="button" class="color-swatch-btn" style="background: #eff6ff;" onclick="pickPreset('#eff6ff')"></button>
+            <button type="button" class="color-swatch-btn" style="background: #ecfdf5;" onclick="pickPreset('#ecfdf5')"></button>
+            <button type="button" class="color-swatch-btn" style="background: #fef3c7;" onclick="pickPreset('#fef3c7')"></button>
+            <button type="button" class="color-swatch-btn" style="background: #fce7f3;" onclick="pickPreset('#fce7f3')"></button>
+            <button type="button" class="color-swatch-btn" style="background: #f3e8ff;" onclick="pickPreset('#f3e8ff')"></button>
+            <button type="button" class="color-swatch-btn" style="background: #1e293b;" onclick="pickPreset('#1e293b')"></button>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="display: flex; justify-content: center;">
+        <button type="button" id="resetColorBtn" class="btn btn-secondary">
+          <i class="fa-solid fa-rotate-left"></i> Khôi Phục Màu Mặc Định
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer class="app-footer" style="background: rgba(255, 255, 255, 0.9);">
+    <p>© 2026 Đại học Lạc Hồng · Học phần 111101 Thiết kế Web · Sinh viên: Huỳnh Hữu Phước (125000155)</p>
+  </footer>
+
+  <script>
+    const colorPicker = document.getElementById('bgColorPicker');
+    const hexValue = document.getElementById('hexValue');
+    const rgbValue = document.getElementById('rgbValue');
+    const bodyElem = document.body;
+    const cardElem = document.getElementById('mainPickerCard');
+    const resetBtn = document.getElementById('resetColorBtn');
+
+    function hexToRgb(hex) {
+      let c = hex.replace('#', '');
+      if (c.length === 3) c = c.split('').map(x => x + x).join('');
+      const num = parseInt(c, 16);
+      return `rgb(${num >> 16}, ${(num >> 8) & 255}, ${num & 255})`;
+    }
+
+    function applyColor(color) {
+      colorPicker.value = color;
+      hexValue.textContent = color.toUpperCase();
+      rgbValue.textContent = hexToRgb(color);
+
+      const target = document.querySelector('input[name="applyTarget"]:checked').value;
+      if (target === 'body') {
+        bodyElem.style.backgroundColor = color;
+        cardElem.style.backgroundColor = '#ffffff';
+      } else {
+        cardElem.style.backgroundColor = color;
+        bodyElem.style.backgroundColor = '#f8fafc';
+      }
+    }
+
+    colorPicker.addEventListener('input', function(e) {
+      applyColor(e.target.value);
+    });
+
+    document.querySelectorAll('input[name="applyTarget"]').forEach(r => {
+      r.addEventListener('change', () => applyColor(colorPicker.value));
+    });
+
+    function pickPreset(color) {
+      applyColor(color);
+    }
+
+    resetBtn.addEventListener('click', function() {
+      applyColor('#f8fafc');
+      bodyElem.style.backgroundColor = '#f8fafc';
+      cardElem.style.backgroundColor = '#ffffff';
+    });
+  </script>
+
+</body>
+</html>
